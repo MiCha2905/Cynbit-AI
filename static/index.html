@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cynbit / Opportunity Copilot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="workspace-layout">
+
+  <!-- Left Sidebar: Quiet Intake & Settings -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-brand">
+        <span class="brand-root">Cynbit</span>
+        <span class="brand-divider">/</span>
+        <span class="brand-app">Opportunity Copilot</span>
+      </div>
+      <div class="sidebar-tag">Solution Architect Workspace</div>
+    </div>
+
+    <div class="sidebar-body">
+      <!-- Brief Intake -->
+      <div class="sidebar-section">
+        <div class="section-label-row">
+          <label for="input-brief" class="sidebar-label">Client Brief</label>
+          <button class="btn-text" id="btn-load-sample">Load sample</button>
+        </div>
+        <textarea 
+          id="input-brief" 
+          class="sidebar-textarea" 
+          rows="8" 
+          placeholder="Paste messy client notes, inquiry emails, or RFP requirements here..."
+        ></textarea>
+        <span class="sidebar-hint" id="brief-char-count">0 characters</span>
+      </div>
+
+      <!-- Controls -->
+      <div class="sidebar-section">
+        <label for="select-industry" class="sidebar-label">Industry</label>
+        <select id="select-industry" class="sidebar-select">
+          <option value="SaaS / Technology" selected>SaaS / Technology</option>
+          <option value="Financial Services">Financial Services</option>
+          <option value="Healthcare & Life Sciences">Healthcare & Life Sciences</option>
+          <option value="E-commerce & Retail">E-commerce & Retail</option>
+          <option value="Logistics & Supply Chain">Logistics & Supply Chain</option>
+          <option value="Professional Services">Professional Services</option>
+        </select>
+      </div>
+
+      <div class="sidebar-section">
+        <label for="select-objective" class="sidebar-label">Primary Goal</label>
+        <select id="select-objective" class="sidebar-select">
+          <option value="Reduce manual repetitive work" selected>Reduce manual repetitive work</option>
+          <option value="Accelerate response & turnaround time">Accelerate response time</option>
+          <option value="Improve decision accuracy & quality">Improve decision accuracy</option>
+          <option value="Reduce operational cost & errors">Reduce operational cost</option>
+          <option value="Scale operations without headcount">Scale operations</option>
+        </select>
+      </div>
+
+      <div class="sidebar-section">
+        <label for="input-constraints" class="sidebar-label">Constraints</label>
+        <input 
+          type="text" 
+          id="input-constraints" 
+          class="sidebar-input" 
+          placeholder="e.g. Sub-2s SLA, human review mandatory"
+          value="Sub-2s response SLA, human review for enterprise deals > $20k"
+        />
+      </div>
+
+      <div class="sidebar-section">
+        <label for="select-provider" class="sidebar-label">AI Engine</label>
+        <select id="select-provider" class="sidebar-select">
+          <option value="auto" selected>Auto-Detect (Active Keys)</option>
+          <option value="groq">Groq (openai/gpt-oss-120b)</option>
+          <option value="gemini">Google Gemini (gemini-3.8-flash)</option>
+          <option value="deterministic">Deterministic Rules Baseline</option>
+        </select>
+      </div>
+
+      <button class="btn-generate" id="btn-analyze">
+        <span class="btn-spinner hidden" id="analyze-spinner"></span>
+        <span id="analyze-btn-text">Generate Proposal</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="engine-status" id="engine-status-row">
+        <span class="status-dot" id="status-dot"></span>
+        <span class="status-text" id="engine-status-text">Detecting engine...</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Proposal Canvas: Generous Editorial Reading Space -->
+  <main class="canvas-main">
+    <div class="canvas-navbar">
+      <div class="nav-breadcrumbs">
+        <span>Workspace</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-current" id="nav-category">Lead and Discovery Workflow Automation</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-outline" id="btn-copy-proposal">Copy text</button>
+        <button class="btn-outline" id="btn-download-json">JSON</button>
+        <button class="btn-dark" id="btn-export-md">Export proposal (.md)</button>
+      </div>
+    </div>
+
+    <!-- Editorial Document Container -->
+    <article class="proposal-doc">
+      <!-- Title & Header -->
+      <header class="doc-header">
+        <div class="doc-meta-row">
+          <span class="doc-badge" id="doc-type-badge">Solution Proposal</span>
+          <span class="doc-version">Version 1.0</span>
+          <span class="doc-mode" id="doc-mode-label">Orchestrated with LangGraph</span>
+        </div>
+        <h1 class="doc-title" id="disp-title">Routing & Assignment Optimization</h1>
+        <p class="doc-lead" id="disp-exec-summary">
+          A scoped technical blueprint to automate inbound workflow triage, enforce deterministic validation, and retain human reviewer sign-off.
+        </p>
+      </header>
+
+      <hr class="doc-divider">
+
+      <!-- Section 01: Current Situation & Problem Statement -->
+      <section class="doc-section">
+        <h2 class="section-heading">01 — Current Situation & Problem</h2>
+        <div class="section-content">
+          <p class="body-p" id="disp-problem">
+            Analyzing inbound inquiry brief...
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 02: Discovery Findings & Fact Classification -->
+      <section class="doc-section">
+        <h2 class="section-heading">02 — Fact & Gap Analysis</h2>
+        <p class="section-subtext">Classified findings from client input. Separates verified statements from architectural deductions and open unknowns.</p>
+
+        <div class="findings-group">
+          <!-- Known -->
+          <div class="finding-block block-known">
+            <h3 class="finding-label label-known">
+              <span class="f-dot dot-known"></span> Stated in Brief [Known]
+            </h3>
+            <ul class="finding-list" id="list-known">
+              <li>Awaiting analysis...</li>
+            </ul>
+          </div>
+
+          <!-- Inferred -->
+          <div class="finding-block block-inferred">
+            <h3 class="finding-label label-inferred">
+              <span class="f-dot dot-inferred"></span> Architectural Deductions [Inferred]
+            </h3>
+            <ul class="finding-list" id="list-inferred">
+              <li>Awaiting analysis...</li>
+            </ul>
+          </div>
+
+          <!-- Missing -->
+          <div class="finding-block block-missing">
+            <h3 class="finding-label label-missing">
+              <span class="f-dot dot-missing"></span> Unanswered Questions & Blind Spots [Missing]
+            </h3>
+            <ul class="finding-list" id="list-missing">
+              <li>Awaiting analysis...</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 03: Next-Best Clarifying Decision -->
+      <section class="doc-section section-callout" id="section-next-q">
+        <div class="callout-inner">
+          <div class="callout-header">
+            <span class="callout-tag">Next-Best Question</span>
+            <span class="callout-impact" id="next-q-impact">Impact: Architecture & SLA</span>
+          </div>
+          <h3 class="callout-question" id="next-q-text">
+            What is the expected daily volume of inbound lead inquiries?
+          </h3>
+          <p class="callout-rationale" id="next-q-rationale">
+            Resolving this locks down whether standard schema parsers or dedicated queue workers are required.
+          </p>
+          <div class="decision-options" id="next-q-options">
+            <!-- Dynamically populated options -->
+          </div>
+          <div class="decision-footer">
+            <span class="decision-tip">Selecting an option will inject the clarification into the brief and recalculate the proposal.</span>
+            <button class="btn-sm-action" id="btn-apply-answer" disabled>Apply Clarification</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 04: Recommended Architecture & Technical Workflow -->
+      <section class="doc-section">
+        <h2 class="section-heading">03 — Recommended Approach & Target Architecture</h2>
+        <div class="section-content">
+          <p class="body-p" id="disp-solution">
+            Recommended solution strategy.
+          </p>
+
+          <!-- Minimal Architecture Flow Strip -->
+          <div class="architecture-strip">
+            <span class="strip-label">Pipeline Architecture:</span>
+            <div class="strip-flow" id="disp-arch-strip">
+              <span class="step-chip">Inbound Ingestion</span>
+              <span class="step-arrow">➔</span>
+              <span class="step-chip">Schema Validation</span>
+              <span class="step-arrow">➔</span>
+              <span class="step-chip">Deterministic Gate</span>
+              <span class="step-arrow">➔</span>
+              <span class="step-chip highlight">Grounded LLM</span>
+              <span class="step-arrow">➔</span>
+              <span class="step-chip human">Human Review Queue</span>
+              <span class="step-arrow">➔</span>
+              <span class="step-chip">Target CRM Delivery</span>
+            </div>
+            <p class="arch-description" id="disp-architecture"></p>
+          </div>
+
+          <h3 class="sub-heading">Step-by-Step Technical Execution</h3>
+          <ol class="editorial-list" id="disp-workflow">
+            <li>Workflow steps...</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Section 05: Phased Implementation Plan & Criteria -->
+      <section class="doc-section">
+        <h2 class="section-heading">04 — Phased Implementation & Success Criteria</h2>
+        <div class="section-content">
+          <div class="editorial-phases" id="disp-phases">
+            <!-- Dynamically populated phases -->
+          </div>
+
+          <div class="criteria-grid">
+            <div class="criteria-col">
+              <h3 class="sub-heading">Measurable Acceptance Metrics</h3>
+              <ul class="bullet-list" id="disp-metrics">
+                <li>Criteria...</li>
+              </ul>
+            </div>
+            <div class="criteria-col">
+              <h3 class="sub-heading">Data & Ground-Truth Requirements</h3>
+              <ul class="bullet-list" id="disp-data">
+                <li>Data requirements...</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 06: Review, Readiness & Governance -->
+      <section class="doc-section doc-section-governance">
+        <h2 class="section-heading">05 — Governance, Risks & Review Council</h2>
+        <div class="section-content">
+          
+          <!-- Proposal Completeness Summary -->
+          <div class="readiness-banner">
+            <div class="rb-left">
+              <span class="rb-title">Proposal Completeness</span>
+              <span class="rb-status" id="readiness-status">Evaluating completeness...</span>
+              <span class="rb-disclaimer">Based on requirements coverage, architecture completeness, unresolved critical questions, and governance checks. Avoids implying business outcome has been validated.</span>
+            </div>
+            <div class="rb-score-box">
+              <span class="rb-score" id="readiness-score">--</span>
+              <span class="rb-denom">/100</span>
+            </div>
+          </div>
+
+          <div class="readiness-breakdown" id="readiness-breakdown">
+            <!-- Checklist of explicit checks -->
+          </div>
+
+          <!-- 3 Structured Review Passes (Evidence-Based Audits) -->
+          <div class="review-passes-grid">
+            <div class="review-pass-card">
+              <div class="pass-top">
+                <span class="pass-name">Technical Feasibility</span>
+                <span class="pass-verdict verdict-pass" id="verdict-tech">PASS</span>
+              </div>
+              <p class="pass-note" id="notes-tech">
+                Evaluating pipeline architecture against deterministic validation and human review gates.
+              </p>
+            </div>
+
+            <div class="review-pass-card">
+              <div class="pass-top">
+                <span class="pass-name">Security & Data Risks</span>
+                <span class="pass-verdict verdict-review" id="verdict-sec">REVIEW</span>
+              </div>
+              <p class="pass-note" id="notes-sec">
+                Auditing external LLM transmission against confidential data constraints and vendor retention policies.
+              </p>
+            </div>
+
+            <div class="review-pass-card">
+              <div class="pass-top">
+                <span class="pass-name">Business Value & Scope</span>
+                <span class="pass-verdict verdict-na" id="verdict-val">NOT ASSESSED</span>
+              </div>
+              <p class="pass-note" id="notes-val">
+                Assessing presence of quantifiable baseline figures (hours, volumes, error rates) in client brief.
+              </p>
+            </div>
+          </div>
+
+          <!-- Operational Risks -->
+          <div class="risks-block">
+            <h3 class="sub-heading">Identified Operational Risks</h3>
+            <ul class="risks-list" id="disp-risks">
+              <li>No risks analyzed yet.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer class="doc-footer">
+        <span>Cynbit AI Opportunity Copilot · Orchestrated with LangGraph</span>
+        <button class="btn-text-scroll" id="btn-scroll-top">Back to top ↑</button>
+      </footer>
+    </article>
+  </main>
+
+  <div class="toast-box" id="toast-box"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
